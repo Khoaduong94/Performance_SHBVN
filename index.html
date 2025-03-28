@@ -44,6 +44,7 @@
             <option value="SO">SO</option>
             <option value="SSO">SSO</option>
             <option value="SE">SE</option>
+            <option value="BDS">BDS</option>
         </select>
 
         <div id="inputs">
@@ -65,34 +66,32 @@
             var PL = document.getElementById("PL").value;
             var resultText = '';
 
-            // Kiểm tra nếu số liệu nhập vào là hợp lệ
             if (CC === '' || PL === '' || isNaN(CC) || isNaN(PL)) {
                 resultText = 'Vui lòng nhập số liệu hợp lệ cho CC và PL.';
             } else {
                 CC = parseFloat(CC);
                 PL = parseFloat(PL);
 
-                // Dữ liệu mục tiêu cho các level
                 var targetCC, targetPL;
-                var percentageCC = 0.7; // CC chiếm 70%
-                var percentagePL = 0.3; // PL chiếm 30%
+                var percentageCC = 0.7;
+                var percentagePL = 0.3;
 
                 if (level === "SO") {
-                    targetCC = 7;   // Mục tiêu CC cho SO
-                    targetPL = 150; // Mục tiêu PL cho SO
+                    targetCC = 7;
+                    targetPL = 150;
                 } else if (level === "SSO") {
-                    targetCC = 9;   // Mục tiêu CC cho SSO
-                    targetPL = 200; // Mục tiêu PL cho SSO
+                    targetCC = 9;
+                    targetPL = 200;
                 } else if (level === "SE") {
-                    targetCC = 13;   // Mục tiêu CC cho SE
-                    targetPL = 250;  // Mục tiêu PL cho SE
+                    targetCC = 13;
+                    targetPL = 250;
+                } else if (level === "BDS") {
+                    targetCC = 65;
+                    targetPL = 1400;
                 }
 
-                // Tính phần trăm đạt được của CC và PL
-                var percentageAchievedCC = (CC / targetCC) * percentageCC * 100;  // CC chiếm 70% của tổng
-                var percentageAchievedPL = (PL / targetPL) * percentagePL * 100;  // PL chiếm 30% của tổng
-
-                // Tính tổng % đạt được
+                var percentageAchievedCC = (CC / targetCC) * percentageCC * 100;
+                var percentageAchievedPL = (PL / targetPL) * percentagePL * 100;
                 var totalPercentage = percentageAchievedCC + percentageAchievedPL;
 
                 resultText = 'Level ' + level + ': Tổng phần trăm đạt được = ' + totalPercentage.toFixed(2) + '%';
