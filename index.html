@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Tính % Đạt Được Theo Level</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        input, select {
+            margin: 10px 0;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        p {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Chọn Level và Nhập Số Liệu</h2>
+        <label for="level">Chọn Level:</label>
+        <select id="level">
+            <option value="SO">SO</option>
+            <option value="SSO">SSO</option>
+            <option value="SE">SE</option>
+        </select>
+
+        <div id="inputs">
+            <label for="CC">Nhập CC:</label>
+            <input type="number" id="CC" placeholder="Nhập CC">
+            <label for="PL">Nhập PL:</label>
+            <input type="number" id="PL" placeholder="Nhập PL">
+        </div>
+
+        <button id="submitBtn">Submit</button>
+
+        <p id="result"></p>
+    </div>
+
+    <script>
+        document.getElementById("submitBtn").addEventListener("click", function() {
+            var level = document.getElementById("level").value;
+            var CC = document.getElementById("CC").value;
+            var PL = document.getElementById("PL").value;
+            var resultText = '';
+
+            // Kiểm tra nếu số liệu nhập vào là hợp lệ
+            if (CC === '' || PL === '' || isNaN(CC) || isNaN(PL)) {
+                resultText = 'Vui lòng nhập số liệu hợp lệ cho CC và PL.';
+            } else {
+                CC = parseFloat(CC);
+                PL = parseFloat(PL);
+
+                // Dữ liệu mục tiêu cho các level
+                var targetCC, targetPL;
+                var percentageCC = 0.7; // CC chiếm 70%
+                var percentagePL = 0.3; // PL chiếm 30%
+
+                if (level === "SO") {
+                    targetCC = 7;   // Mục tiêu CC cho SO
+                    targetPL = 150; // Mục tiêu PL cho SO
+                } else if (level === "SSO") {
+                    targetCC = 9;   // Mục tiêu CC cho SSO
+                    targetPL = 200; // Mục tiêu PL cho SSO
+                } else if (level === "SE") {
+                    targetCC = 13;   // Mục tiêu CC cho SE
+                    targetPL = 250;  // Mục tiêu PL cho SE
+                }
+
+                // Tính phần trăm đạt được của CC và PL
+                var percentageAchievedCC = (CC / targetCC) * percentageCC * 100;  // CC chiếm 70% của tổng
+                var percentageAchievedPL = (PL / targetPL) * percentagePL * 100;  // PL chiếm 30% của tổng
+
+                // Tính tổng % đạt được
+                var totalPercentage = percentageAchievedCC + percentageAchievedPL;
+
+                resultText = 'Level ' + level + ': Tổng phần trăm đạt được = ' + totalPercentage.toFixed(2) + '%';
+            }
+
+            document.getElementById("result").innerText = resultText;
+        });
+    </script>
+
+</body>
+</html>
