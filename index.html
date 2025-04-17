@@ -50,6 +50,24 @@
             margin-top: 20px;
             line-height: 1.6;
         }
+        .progress-container {
+            width: 100%;
+            background-color: #eee;
+            border-radius: 20px;
+            margin-top: 20px;
+            height: 25px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #aaa;
+            text-align: center;
+            line-height: 25px;
+            color: white;
+            font-weight: bold;
+            transition: width 0.5s;
+        }
         @media (max-width: 600px) {
             .container {
                 width: 90%;
@@ -81,19 +99,27 @@
             <button id="resetBtn">Làm mới</button>
         </div>
 
+        <div class="progress-container">
+            <div id="progressBar" class="progress-bar">0%</div>
+        </div>
+
         <p id="result"></p>
     </div>
 
     <script>
-        document.getElementById("submitBtn").addEventListener("click", function() {
+        document.getElementById("submitBtn").addEventListener("click", function () {
             var level = document.getElementById("level").value;
             var CC = document.getElementById("CC").value;
             var PL = document.getElementById("PL").value;
             var resultText = '';
+            var progressBar = document.getElementById("progressBar");
 
             if (CC === '' || PL === '' || isNaN(CC) || isNaN(PL)) {
                 resultText = '❌ Vui lòng nhập số liệu hợp lệ cho CC và PL.';
                 document.getElementById("result").style.color = "red";
+                progressBar.style.width = "0%";
+                progressBar.style.backgroundColor = "#aaa";
+                progressBar.innerText = "0%";
             } else {
                 CC = parseFloat(CC);
                 PL = parseFloat(PL);
@@ -116,8 +142,9 @@
                 var percentageAchievedCC = (CC / targetCC) * percentageCC * 100;
                 var percentageAchievedPL = (PL / targetPL) * percentagePL * 100;
                 var totalPercentage = percentageAchievedCC + percentageAchievedPL;
+                var displayPercent = Math.min(totalPercentage, 100); // max 100%
 
-                resultText = 
+                resultText =
                     '🔎 Level ' + level + ':<br>' +
                     '• CC đạt: <strong>' + percentageAchievedCC.toFixed(2) + '%</strong><br>' +
                     '• PL đạt: <strong>' + percentageAchievedPL.toFixed(2) + '%</strong><br>' +
@@ -125,20 +152,29 @@
 
                 if (totalPercentage >= 100) {
                     document.getElementById("result").style.color = "green";
+                    progressBar.style.backgroundColor = "#4CAF50";
                 } else {
                     document.getElementById("result").style.color = "orange";
+                    progressBar.style.backgroundColor = "#FFA500";
                 }
+
+                progressBar.style.width = displayPercent.toFixed(2) + "%";
+                progressBar.innerText = totalPercentage.toFixed(2) + "%";
             }
 
             document.getElementById("result").innerHTML = resultText;
         });
 
-        document.getElementById("resetBtn").addEventListener("click", function() {
+        document.getElementById("resetBtn").addEventListener("click", function () {
             document.getElementById("level").value = "SO";
             document.getElementById("CC").value = "";
             document.getElementById("PL").value = "";
             document.getElementById("result").innerText = "";
             document.getElementById("result").style.color = "black";
+            var progressBar = document.getElementById("progressBar");
+            progressBar.style.width = "0%";
+            progressBar.style.backgroundColor = "#aaa";
+            progressBar.innerText = "0%";
         });
     </script>
 
