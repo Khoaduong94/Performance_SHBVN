@@ -1,182 +1,244 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tool Tính % Đạt Được Theo Level</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        input, select {
-            margin: 10px 0;
-            padding: 8px;
-            width: 100%;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-        button {
-            padding: 10px 20px;
-            margin: 10px 5px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 6px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #resetBtn {
-            background-color: #888;
-        }
-        #resetBtn:hover {
-            background-color: #666;
-        }
-        p {
-            font-size: 18px;
-            margin-top: 20px;
-            line-height: 1.6;
-        }
-        .progress-container {
-            width: 100%;
-            background-color: #eee;
-            border-radius: 20px;
-            margin-top: 20px;
-            height: 25px;
-            overflow: hidden;
-        }
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background-color: #aaa;
-            text-align: center;
-            line-height: 25px;
-            color: white;
-            font-weight: bold;
-            transition: width 0.5s;
-        }
-        @media (max-width: 600px) {
-            .container {
-                width: 90%;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tool Tính % Đạt Được Theo Level</title>
+  <style>
+    /* --- NỀN TOÀN TRANG --- */
+    body {
+      font-family: "Poppins", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      backdrop-filter: blur(10px);
+    }
+
+    /* --- KHUNG CHÍNH BONG BÓNG --- */
+    .container {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      width: 350px;
+      padding: 30px;
+      text-align: center;
+      color: #fff;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      font-weight: 600;
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    label {
+      font-size: 15px;
+      display: block;
+      margin-top: 10px;
+      text-align: left;
+      opacity: 0.9;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.25);
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: background 0.3s ease;
+    }
+
+    select:focus, input:focus {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    option {
+      color: #000;
+    }
+
+    button {
+      width: 48%;
+      margin-top: 15px;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #submitBtn {
+      background: rgba(76, 175, 80, 0.7);
+      color: #fff;
+    }
+
+    #submitBtn:hover {
+      background: rgba(76, 175, 80, 1);
+    }
+
+    #resetBtn {
+      background: rgba(255, 255, 255, 0.25);
+      color: #fff;
+    }
+
+    #resetBtn:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .progress-container {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      margin-top: 20px;
+      height: 25px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ffb347, #ffcc33);
+      text-align: center;
+      line-height: 25px;
+      color: white;
+      font-weight: bold;
+      border-radius: 20px;
+      transition: width 0.6s ease;
+    }
+
+    p {
+      font-size: 16px;
+      margin-top: 20px;
+      line-height: 1.6;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        width: 90%;
+        padding: 25px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Chọn Level và Nhập Số Liệu</h2>
-        
-        <label for="level">Chọn Level:</label>
-        <select id="level">
-            <option value="SO">SO</option>
-            <option value="SSO">SSO</option>
-            <option value="SE">SE</option>
-        </select>
+  <div class="container">
+    <h2>🎯 Tool Tính % Theo Level</h2>
 
-        <div id="inputs">
-            <label for="CC">Nhập CC:</label>
-            <input type="number" id="CC" placeholder="Nhập CC">
-            <label for="PL">Nhập PL:</label>
-            <input type="number" id="PL" placeholder="Nhập PL">
-        </div>
+    <label for="level">Chọn Level:</label>
+    <select id="level">
+      <option value="SO">SO</option>
+      <option value="SSO">SSO</option>
+      <option value="SE">SE</option>
+    </select>
 
-        <div>
-            <button id="submitBtn">Tính</button>
-            <button id="resetBtn">Làm mới</button>
-        </div>
+    <label for="CC">Nhập CC:</label>
+    <input type="number" id="CC" placeholder="Nhập số CC">
 
-        <div class="progress-container">
-            <div id="progressBar" class="progress-bar">0%</div>
-        </div>
+    <label for="PL">Nhập PL:</label>
+    <input type="number" id="PL" placeholder="Nhập số PL">
 
-        <p id="result"></p>
+    <div style="display: flex; justify-content: space-between;">
+      <button id="submitBtn">Tính</button>
+      <button id="resetBtn">Làm mới</button>
     </div>
 
-    <script>
-        document.getElementById("submitBtn").addEventListener("click", function () {
-            var level = document.getElementById("level").value;
-            var CC = document.getElementById("CC").value;
-            var PL = document.getElementById("PL").value;
-            var resultText = '';
-            var progressBar = document.getElementById("progressBar");
+    <div class="progress-container">
+      <div id="progressBar" class="progress-bar">0%</div>
+    </div>
 
-            if (CC === '' || PL === '' || isNaN(CC) || isNaN(PL)) {
-                resultText = '❌ Vui lòng nhập số liệu hợp lệ cho CC và PL.';
-                document.getElementById("result").style.color = "red";
-                progressBar.style.width = "0%";
-                progressBar.style.backgroundColor = "#aaa";
-                progressBar.innerText = "0%";
-            } else {
-                CC = parseFloat(CC);
-                PL = parseFloat(PL);
+    <p id="result"></p>
+  </div>
 
-                var targetCC, targetPL;
-                var percentageCC = 0.7;
-                var percentagePL = 0.3;
+  <script>
+    document.getElementById("submitBtn").addEventListener("click", function () {
+      var level = document.getElementById("level").value;
+      var CC = document.getElementById("CC").value;
+      var PL = document.getElementById("PL").value;
+      var resultText = '';
+      var progressBar = document.getElementById("progressBar");
 
-                if (level === "SO") {
-                    targetCC = 6;
-                    targetPL = 150;
-                } else if (level === "SSO") {
-                    targetCC = 9;
-                    targetPL = 200;
-                } else if (level === "SE") {
-                    targetCC = 13;
-                    targetPL = 250;
-                }
+      if (CC === '' || PL === '' || isNaN(CC) || isNaN(PL)) {
+        resultText = '❌ Vui lòng nhập số liệu hợp lệ cho CC và PL.';
+        document.getElementById("result").style.color = "#ffcccc";
+        progressBar.style.width = "0%";
+        progressBar.style.background = "rgba(255,255,255,0.3)";
+        progressBar.innerText = "0%";
+      } else {
+        CC = parseFloat(CC);
+        PL = parseFloat(PL);
 
-                var percentageAchievedCC = (CC / targetCC) * percentageCC * 100;
-                var percentageAchievedPL = (PL / targetPL) * percentagePL * 100;
-                var totalPercentage = percentageAchievedCC + percentageAchievedPL;
-                var displayPercent = Math.min(totalPercentage, 100); // max 100%
+        var targetCC, targetPL;
+        var percentageCC, percentagePL;
 
-                resultText =
-                    '🔎 Level ' + level + ':<br>' +
-                    '• CC đạt: <strong>' + percentageAchievedCC.toFixed(2) + '%</strong><br>' +
-                    '• PL đạt: <strong>' + percentageAchievedPL.toFixed(2) + '%</strong><br>' +
-                    '➡️ Tổng phần trăm đạt được: <strong>' + totalPercentage.toFixed(2) + '%</strong>';
+        if (level === "SO") {
+          targetCC = 6;
+          targetPL = 150;
+          percentageCC = 0.7;
+          percentagePL = 0.3;
+        } else if (level === "SSO") {
+          targetCC = 9;
+          targetPL = 200;
+          percentageCC = 0.7;
+          percentagePL = 0.3;
+        } else if (level === "SE") {
+          targetCC = 4;
+          targetPL = 700;
+          percentageCC = 0.2;
+          percentagePL = 0.8;
+        }
 
-                if (totalPercentage >= 100) {
-                    document.getElementById("result").style.color = "green";
-                    progressBar.style.backgroundColor = "#4CAF50";
-                } else {
-                    document.getElementById("result").style.color = "orange";
-                    progressBar.style.backgroundColor = "#FFA500";
-                }
+        var percentageAchievedCC = (CC / targetCC) * percentageCC * 100;
+        var percentageAchievedPL = (PL / targetPL) * percentagePL * 100;
+        var totalPercentage = percentageAchievedCC + percentageAchievedPL;
+        var displayPercent = Math.min(totalPercentage, 100);
 
-                progressBar.style.width = displayPercent.toFixed(2) + "%";
-                progressBar.innerText = totalPercentage.toFixed(2) + "%";
-            }
+        resultText =
+          '🔎 Level ' + level + ':<br>' +
+          '• CC đạt: <strong>' + percentageAchievedCC.toFixed(2) + '%</strong><br>' +
+          '• PL đạt: <strong>' + percentageAchievedPL.toFixed(2) + '%</strong><br>' +
+          '➡️ Tổng phần trăm đạt được: <strong>' + totalPercentage.toFixed(2) + '%</strong>';
 
-            document.getElementById("result").innerHTML = resultText;
-        });
+        if (totalPercentage >= 100) {
+          document.getElementById("result").style.color = "#b8ffb8";
+          progressBar.style.background = "linear-gradient(90deg, #4caf50, #81c784)";
+        } else {
+          document.getElementById("result").style.color = "#fff8b3";
+          progressBar.style.background = "linear-gradient(90deg, #ffb347, #ffcc33)";
+        }
 
-        document.getElementById("resetBtn").addEventListener("click", function () {
-            document.getElementById("level").value = "SO";
-            document.getElementById("CC").value = "";
-            document.getElementById("PL").value = "";
-            document.getElementById("result").innerText = "";
-            document.getElementById("result").style.color = "black";
-            var progressBar = document.getElementById("progressBar");
-            progressBar.style.width = "0%";
-            progressBar.style.backgroundColor = "#aaa";
-            progressBar.innerText = "0%";
-        });
-    </script>
+        progressBar.style.width = displayPercent.toFixed(2) + "%";
+        progressBar.innerText = totalPercentage.toFixed(2) + "%";
+      }
+
+      document.getElementById("result").innerHTML = resultText;
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", function () {
+      document.getElementById("level").value = "SO";
+      document.getElementById("CC").value = "";
+      document.getElementById("PL").value = "";
+      document.getElementById("result").innerText = "";
+      document.getElementById("result").style.color = "#fff";
+      var progressBar = document.getElementById("progressBar");
+      progressBar.style.width = "0%";
+      progressBar.style.background = "rgba(255,255,255,0.3)";
+      progressBar.innerText = "0%";
+    });
+  </script>
 
 </body>
 </html>
