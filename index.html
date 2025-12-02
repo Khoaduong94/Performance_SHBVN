@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tool Tính % Đạt Được Theo Level</title>
+  <title>Tool Tính % Đạt Được Theo Level (New Logic)</title>
   <style>
-    /* --- NỀN TOÀN TRANG --- */
+    /* --- GIỮ NGUYÊN GIAO DIỆN GLASSMORPHISM CŨ --- */
     body {
       font-family: "Poppins", Arial, sans-serif;
       margin: 0;
@@ -18,7 +18,6 @@
       backdrop-filter: blur(10px);
     }
 
-    /* --- KHUNG CHÍNH BONG BÓNG --- */
     .container {
       background: rgba(255, 255, 255, 0.15);
       box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
@@ -32,127 +31,62 @@
       color: #fff;
     }
 
-    h2 {
-      margin-bottom: 15px;
-      font-weight: 600;
-      color: #fff;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    }
-
-    label {
-      font-size: 15px;
-      display: block;
-      margin-top: 10px;
-      text-align: left;
-      opacity: 0.9;
-    }
-
+    h2 { margin-bottom: 15px; font-weight: 600; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
+    label { font-size: 15px; display: block; margin-top: 10px; text-align: left; opacity: 0.9; }
+    
     select, input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: none;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.25);
-      color: #fff;
-      font-size: 15px;
-      outline: none;
-      transition: background 0.3s ease;
+      width: 100%; padding: 10px; margin-top: 5px; border: none; border-radius: 10px;
+      background: rgba(255, 255, 255, 0.25); color: #fff; font-size: 15px; outline: none;
+      transition: background 0.3s ease; box-sizing: border-box; /* Fix lỗi padding làm tràn khung */
     }
+    select:focus, input:focus { background: rgba(255, 255, 255, 0.4); }
+    option { color: #000; }
 
-    select:focus, input:focus {
-      background: rgba(255, 255, 255, 0.4);
-    }
-
-    option {
-      color: #000;
-    }
-
+    .btn-group { display: flex; justify-content: space-between; margin-top: 15px; }
     button {
-      width: 48%;
-      margin-top: 15px;
-      padding: 10px 15px;
-      font-size: 16px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      width: 48%; padding: 10px 15px; font-size: 16px; border: none; border-radius: 10px;
+      cursor: pointer; transition: all 0.3s ease;
     }
-
-    #submitBtn {
-      background: rgba(76, 175, 80, 0.7);
-      color: #fff;
-    }
-
-    #submitBtn:hover {
-      background: rgba(76, 175, 80, 1);
-    }
-
-    #resetBtn {
-      background: rgba(255, 255, 255, 0.25);
-      color: #fff;
-    }
-
-    #resetBtn:hover {
-      background: rgba(255, 255, 255, 0.4);
-    }
+    #submitBtn { background: rgba(76, 175, 80, 0.7); color: #fff; }
+    #submitBtn:hover { background: rgba(76, 175, 80, 1); }
+    #resetBtn { background: rgba(255, 255, 255, 0.25); color: #fff; }
+    #resetBtn:hover { background: rgba(255, 255, 255, 0.4); }
 
     .progress-container {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 20px;
-      margin-top: 20px;
-      height: 25px;
-      overflow: hidden;
+      width: 100%; background: rgba(255, 255, 255, 0.2); border-radius: 20px;
+      margin-top: 20px; height: 25px; overflow: hidden;
     }
-
     .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #ffb347, #ffcc33);
-      text-align: center;
-      line-height: 25px;
-      color: white;
-      font-weight: bold;
-      border-radius: 20px;
-      transition: width 0.6s ease;
+      height: 100%; width: 0%; background: linear-gradient(90deg, #ffb347, #ffcc33);
+      text-align: center; line-height: 25px; color: white; font-weight: bold;
+      border-radius: 20px; transition: width 0.6s ease;
     }
-
-    p {
-      font-size: 16px;
-      margin-top: 20px;
-      line-height: 1.6;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-    }
-
-    @media (max-width: 480px) {
-      .container {
-        width: 90%;
-        padding: 25px;
-      }
-    }
+    p { font-size: 16px; margin-top: 20px; line-height: 1.6; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+    
+    /* Highlight số liệu quan trọng */
+    strong { color: #fff; }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h2>🎯 Tool Tính % Theo Level</h2>
+    <h2>🎯 KPI</h2>
 
     <label for="level">Chọn Level:</label>
     <select id="level">
-      <option value="SO">SO</option>
-      <option value="SSO">SSO</option>
-      <option value="SE">SE</option>
+      <option value="SO">SO (Target: 2 CC / 380 PL)</option>
+      <option value="SSO">SSO (Target: 3 CC / 520 PL)</option>
+      <option value="SE">SE (Target: 4 CC / 700 PL)</option>
     </select>
 
-    <label for="CC">Nhập CC:</label>
-    <input type="number" id="CC" placeholder="Nhập số CC">
+    <label for="CC">Nhập CC (Tỷ lệ 20%):</label>
+    <input type="number" id="CC" placeholder="Nhập số CC thực đạt">
 
-    <label for="PL">Nhập PL:</label>
-    <input type="number" id="PL" placeholder="Nhập số PL">
+    <label for="PL">Nhập PL (Tỷ lệ 80%):</label>
+    <input type="number" id="PL" placeholder="Nhập số PL thực đạt">
 
-    <div style="display: flex; justify-content: space-between;">
-      <button id="submitBtn">Tính</button>
+    <div class="btn-group">
+      <button id="submitBtn">Tính Toán</button>
       <button id="resetBtn">Làm mới</button>
     </div>
 
@@ -164,79 +98,81 @@
   </div>
 
   <script>
+    // --- 1. CẤU HÌNH THÔNG SỐ (DỄ DÀNG CHỈNH SỬA TẠI ĐÂY) ---
+    const CONFIG = {
+        "SO":  { ccTarget: 2, plTarget: 380, ccWeight: 0.2, plWeight: 0.8 },
+        "SSO": { ccTarget: 3, plTarget: 520, ccWeight: 0.2, plWeight: 0.8 },
+        "SE":  { ccTarget: 4, plTarget: 700, ccWeight: 0.2, plWeight: 0.8 }
+    };
+
     document.getElementById("submitBtn").addEventListener("click", function () {
-      var level = document.getElementById("level").value;
-      var CC = document.getElementById("CC").value;
-      var PL = document.getElementById("PL").value;
-      var resultText = '';
-      var progressBar = document.getElementById("progressBar");
+      const level = document.getElementById("level").value;
+      let CC = document.getElementById("CC").value;
+      let PL = document.getElementById("PL").value;
+      
+      const resultEl = document.getElementById("result");
+      const progressBar = document.getElementById("progressBar");
 
+      // Validate đầu vào
       if (CC === '' || PL === '' || isNaN(CC) || isNaN(PL)) {
-        resultText = '❌ Vui lòng nhập số liệu hợp lệ cho CC và PL.';
-        document.getElementById("result").style.color = "#ffcccc";
-        progressBar.style.width = "0%";
-        progressBar.style.background = "rgba(255,255,255,0.3)";
-        progressBar.innerText = "0%";
-      } else {
-        CC = parseFloat(CC);
-        PL = parseFloat(PL);
-
-        var targetCC, targetPL;
-        var percentageCC, percentagePL;
-
-        if (level === "SO") {
-          targetCC = 6;
-          targetPL = 150;
-          percentageCC = 0.7;
-          percentagePL = 0.3;
-        } else if (level === "SSO") {
-          targetCC = 9;
-          targetPL = 200;
-          percentageCC = 0.7;
-          percentagePL = 0.3;
-        } else if (level === "SE") {
-          targetCC = 4;
-          targetPL = 700;
-          percentageCC = 0.2;
-          percentagePL = 0.8;
-        }
-
-        var percentageAchievedCC = (CC / targetCC) * percentageCC * 100;
-        var percentageAchievedPL = (PL / targetPL) * percentagePL * 100;
-        var totalPercentage = percentageAchievedCC + percentageAchievedPL;
-        var displayPercent = Math.min(totalPercentage, 100);
-
-        resultText =
-          '🔎 Level ' + level + ':<br>' +
-          '• CC đạt: <strong>' + percentageAchievedCC.toFixed(2) + '%</strong><br>' +
-          '• PL đạt: <strong>' + percentageAchievedPL.toFixed(2) + '%</strong><br>' +
-          '➡️ Tổng phần trăm đạt được: <strong>' + totalPercentage.toFixed(2) + '%</strong>';
-
-        if (totalPercentage >= 100) {
-          document.getElementById("result").style.color = "#b8ffb8";
-          progressBar.style.background = "linear-gradient(90deg, #4caf50, #81c784)";
-        } else {
-          document.getElementById("result").style.color = "#fff8b3";
-          progressBar.style.background = "linear-gradient(90deg, #ffb347, #ffcc33)";
-        }
-
-        progressBar.style.width = displayPercent.toFixed(2) + "%";
-        progressBar.innerText = totalPercentage.toFixed(2) + "%";
+        resultEl.innerHTML = '❌ Vui lòng nhập đầy đủ số liệu.';
+        resultEl.style.color = "#ffcccc";
+        updateProgress(0, "rgba(255,255,255,0.3)", "0%");
+        return;
       }
 
-      document.getElementById("result").innerHTML = resultText;
+      // Chuyển sang số thực
+      CC = parseFloat(CC);
+      PL = parseFloat(PL);
+
+      // Lấy cấu hình dựa trên Level đã chọn
+      const setting = CONFIG[level];
+
+      // --- TÍNH TOÁN ---
+      // Công thức: (Thực đạt / Target) * Trọng số * 100
+      const percentCC = (CC / setting.ccTarget) * setting.ccWeight * 100;
+      const percentPL = (PL / setting.plTarget) * setting.plWeight * 100;
+      
+      const totalPercentage = percentCC + percentPL;
+      
+      // Hiển thị tối đa 100% trên thanh bar (dù kết quả có thể > 100%)
+      const displayBarPercent = Math.min(totalPercentage, 100);
+
+      // Hiển thị kết quả chi tiết
+      resultEl.innerHTML = 
+        `🔎 <b>Level ${level}</b> (Target: CC ${setting.ccTarget} - PL ${setting.plTarget})<br>` +
+        `• CC (${setting.ccWeight*100}%): <strong>${percentCC.toFixed(2)}%</strong><br>` +
+        `• PL (${setting.plWeight*100}%): <strong>${percentPL.toFixed(2)}%</strong><br>` +
+        `➡️ Tổng kết quả: <strong style="font-size:1.2em">${totalPercentage.toFixed(2)}%</strong>`;
+
+      // Đổi màu dựa trên kết quả
+      let barColor;
+      if (totalPercentage >= 100) {
+        resultEl.style.color = "#b8ffb8"; // Xanh nhạt
+        barColor = "linear-gradient(90deg, #4caf50, #81c784)";
+      } else {
+        resultEl.style.color = "#fff8b3"; // Vàng nhạt
+        barColor = "linear-gradient(90deg, #ffb347, #ffcc33)";
+      }
+
+      updateProgress(displayBarPercent, barColor, totalPercentage.toFixed(2) + "%");
     });
 
+    // Hàm cập nhật thanh tiến trình
+    function updateProgress(width, color, text) {
+        const bar = document.getElementById("progressBar");
+        bar.style.width = width + "%";
+        bar.style.background = color;
+        bar.innerText = text;
+    }
+
+    // Nút Reset
     document.getElementById("resetBtn").addEventListener("click", function () {
       document.getElementById("level").value = "SO";
       document.getElementById("CC").value = "";
       document.getElementById("PL").value = "";
       document.getElementById("result").innerText = "";
-      document.getElementById("result").style.color = "#fff";
-      var progressBar = document.getElementById("progressBar");
-      progressBar.style.width = "0%";
-      progressBar.style.background = "rgba(255,255,255,0.3)";
-      progressBar.innerText = "0%";
+      updateProgress(0, "rgba(255,255,255,0.3)", "0%");
     });
   </script>
 
